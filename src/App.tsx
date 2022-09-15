@@ -4,8 +4,8 @@ import { ThemeProvider } from 'styled-components';
 import light from './styles/themes/light';
 import dark from './styles/themes/dark';
 
-import GlobalStyle from './styles/global'
-import Navbar from './components/Navbar/Navbar'
+import GlobalStyle from './styles/global';
+import Navbar from './components/Navbar/Navbar';
 
 function App() {
 
