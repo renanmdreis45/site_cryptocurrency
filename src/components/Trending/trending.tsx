@@ -18,10 +18,15 @@ interface Props {
   onsetModal: Function;
 }
 
+
 const Trending: React.FC<Props> = ({themeStatus, onsetModal}) => {
-    const [trendingCoins, setTrendingCoins] = useState([]);
+    const [trendingCoins, setTrendingCoins]: any = useState<{}>({
+      id: 0,
+      name: "",
+      image: "",
+    });
     const [isLoaded, setTrendingStatus] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(null);    
 
     const fetchTrendingCoins = useCallback(async () => {
         try {
@@ -34,6 +39,7 @@ const Trending: React.FC<Props> = ({themeStatus, onsetModal}) => {
             }
             let data = await response.json();
             setTrendingCoins(data);
+            console.log(data);
             setTrendingStatus(true);
         } catch(error) {
             let message
@@ -62,16 +68,16 @@ const Trending: React.FC<Props> = ({themeStatus, onsetModal}) => {
               responsive={responsiveSettings}
               autoPlay
             >
-              {trendingCoins.map((coin: any) => {
+              {trendingCoins.map(({id, name, img}: any) => {
                 return (
                   <TrendCoin
-                    key={coin.id}
+                    key={trendingCoins.id}
                     theme={themeStatus}
                     onClick={() => {
-                      onsetModal(coin.id);
+                      onsetModal(trendingCoins.id);
                     }}
-                    trendingImg={coin.image}
-                    trendingName={coin.name}
+                    trendingImg={trendingCoins.image}
+                    trendingName={trendingCoins.name}
                   />
                 );
               })}
