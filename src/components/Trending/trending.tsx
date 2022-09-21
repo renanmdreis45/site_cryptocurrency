@@ -1,8 +1,10 @@
-import  React, {useCallback, useEffect, useState} from "react";
+import  React, {useEffect, useState} from "react";
 import AliceCarousel from "react-alice-carousel";
 import Skeleton from 'react-loading-skeleton'
 import { TrendingCoins } from "../api";
 import TrendCoin from "./TrendCoin";
+import axios, {AxiosResponse} from 'axios';
+import TrendingHead from "./TrendingHead";
 
 const responsiveSettings = {
     0: {
@@ -18,70 +20,72 @@ interface Props {
   onsetModal: Function;
 }
 
+interface Coins {
+  id: string;
+  name: string;
+  image: string;
+};
+
 
 const Trending: React.FC<Props> = ({themeStatus, onsetModal}) => {
-    const [trendingCoins, setTrendingCoins]: any = useState<{}>({
-      id: 0,
-      name: "",
-      image: "",
-    });
-    const [isLoaded, setTrendingStatus] = useState(false);
-    const [error, setError] = useState(null);    
 
-    const fetchTrendingCoins = useCallback(async () => {
-        try {
-            setTrendingStatus(false);
-            setError(null);
-            let url = TrendingCoins("usd");
-            let response = await fetch(url);
-            if(!response.ok) {
-                throw new Error("Something went wrong");
-            }
-            let data = await response.json();
-            setTrendingCoins(data);
-            console.log(data);
-            setTrendingStatus(true);
-        } catch(error) {
-            let message
-            if(error instanceof Error) message = error.message
-            else message = String(error)
+  const [coins, setCoins] = useState<[Coins]>();
+  const [loading, setLoading] = useState<boolean>(false);
 
-            reportError({message})
-        }
-    },[]);
-
-    useEffect(() => {
-        fetchTrendingCoins();
-    },[fetchTrendingCoins]);
     
+  useEffect(() => {
+
+
+    const fetchData= async () => {
+        setLoading(true);
+        let url = TrendingCoins();
+        console.log(url);
+        await axios.get(url)
+        .then((response: AxiosResponse) => {
+          setCoins(response.data);
+          console.log(response.data)
+        })
+        .catch((error) => {
+           if(axios.isCancel(error)) {
+            console.log("Fetching aborted")
+           } else {
+            console.log(error.message);
+           }
+        });
+      setLoading(false);
+      console.log(loading)
+    };
+    
+  fetchData();
+
+  }, []);
+
     return (
         <div className="mt-4 shadow-[0_4px_12px_rgba(0,0,0,0.1)] w-[95% max-w-[1200px] mx-auto rounded-md p-6">
-          {!isLoaded && <Skeleton className="h-32 w-full" />}
-          {isLoaded && !error && (
+          <TrendingHead />
+          {loading ? (     
+            <Skeleton className="h-32 w-full" />            
+          ) : (
             <AliceCarousel
-              mouseTracking
-              infinite
-              autoPlayInterval={1000}
-              animationDuration={1500}
-              disableDotsControls
-              disableButtonsControls
-              responsive={responsiveSettings}
-              autoPlay
+            infinite={false}
+            autoPlayInterval={1000}
+            animationDuration={1500}
+            responsive={responsiveSettings}
             >
-              {trendingCoins.map(({id, name, img}: any) => {
-                return (
+              {coins?.map(coin => {
+                 return (
                   <TrendCoin
-                    key={trendingCoins.id}
+                    key={coin.id}
                     theme={themeStatus}
                     onClick={() => {
-                      onsetModal(trendingCoins.id);
+                      onsetModal(coin.id);
                     }}
-                    trendingImg={trendingCoins.image}
-                    trendingName={trendingCoins.name}
+                    trendingImg={coin.image}
+                    trendingName={coin.name}
                   />
                 );
               })}
-            </AliceCarousel>
+            </AliceCarousel>                               
           )}
         </div>
     );
