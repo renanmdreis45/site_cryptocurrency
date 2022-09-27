@@ -5,7 +5,7 @@ import {
     faArrowTrendUp,
   } from "@fortawesome/free-solid-svg-icons";
 
-const TrendingHead = () => {
+export const TrendingHead = () => {
     return(
         <div className="flex items-center mb-4">
             <FontAwesomeIcon className="text-green-700" icon={faArrowTrendUp} />
@@ -14,5 +14,3 @@ const TrendingHead = () => {
         </div>
     );
 };
-
-export default TrendingHead;
