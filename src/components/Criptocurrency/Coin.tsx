@@ -2,7 +2,7 @@ import { useSlotProps } from "@mui/base";
 import CoinsTableHead from "./CoinsTableHead";
 
 export interface Bitcoin {
-  id: number;
+  id: string;
   image: string;
   current_price: number;
   total_volume: number;
@@ -13,7 +13,7 @@ export interface Bitcoin {
 
 interface Props {
   eachData: Bitcoin;
-  onSetOpenModal(id: number): void;
+  onSetOpenModal(id: string): void;
   themeStatus: boolean;
   num: number;
 }

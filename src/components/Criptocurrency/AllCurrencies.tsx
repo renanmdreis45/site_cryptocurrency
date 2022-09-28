@@ -3,10 +3,9 @@ import Skeleton from "react-loading-skeleton"
 import {Pagination} from "@mui/material";
 import Coin from "./Coin";
 import CoinsTableHead from "./CoinsTableHead";
-import { isPropertySignature } from "typescript";
 
 export interface Coin {
-    id: number;
+    id: string;
     image: string;
     current_price: number;
     total_volume: number;
@@ -18,7 +17,7 @@ export interface Coin {
 interface Props {
   theme: boolean;
   allCoins: Coin[];
-  onCloseModalHandler(id: number): void;
+  onCloseModalHandler(id: string): void;
   errorCoin: string;
   loadingStatus: boolean;
 
@@ -76,3 +75,5 @@ const AllCurrencies: React.FC<Props> = ({theme, allCoins, onCloseModalHandler, e
       </>
     )
 }
+
+export default AllCurrencies;

@@ -27,7 +27,7 @@ interface Coins {
 };
 
 
-const Trending: React.FC<Props> = ({themeStatus, onsetModal}) => {
+export const Trending: React.FC<Props> = ({themeStatus, onsetModal}) => {
 
   const [coins, setCoins] = useState<[Coins]>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -73,7 +73,8 @@ const Trending: React.FC<Props> = ({themeStatus, onsetModal}) => {
             disableDotsControls
             disableButtonsControls
             responsive={responsiveSettings}
-            autoPlay>
+            autoPlay
+            >
               {coins?.map(coin => {
                  return (
                   <TrendCoin
@@ -92,5 +93,3 @@ const Trending: React.FC<Props> = ({themeStatus, onsetModal}) => {
         </div>
     );
 };
-
-export default Trending;
