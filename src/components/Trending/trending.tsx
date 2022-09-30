@@ -36,7 +36,7 @@ export const Trending: React.FC<Props> = ({themeStatus, onsetModal}) => {
   useEffect(() => {
 
 
-    const fetchData= async () => {
+    const fetchData = async () => {
         setLoading(false);
         let url = TrendingCoins();
         console.log(url);
