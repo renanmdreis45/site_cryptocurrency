@@ -1,4 +1,4 @@
-import  React, {useEffect, useState} from "react";
+import  React, {useEffect, useState, useCallback} from "react";
 import AliceCarousel from "react-alice-carousel";
 import Skeleton from 'react-loading-skeleton'
 import { TrendingCoins } from "../api";
@@ -33,32 +33,29 @@ export const Trending: React.FC<Props> = ({themeStatus, onsetModal}) => {
   const [loading, setLoading] = useState<boolean>(false);
 
     
+  const fetchData = useCallback(async () => {
+    setLoading(false);
+    let url = TrendingCoins();
+    console.log(url);
+    await axios.get(url)
+    .then((response: AxiosResponse) => {
+      setCoins(response.data);
+    })
+    .catch((error) => {
+       if(axios.isCancel(error)) {
+        console.log("Fetching aborted")
+       } else {
+        console.log(error.message);
+       }
+    });
+  setLoading(true);
+  },[])
+
   useEffect(() => {
-
-
-    const fetchData = async () => {
-        setLoading(false);
-        let url = TrendingCoins();
-        console.log(url);
-        await axios.get(url)
-        .then((response: AxiosResponse) => {
-          setCoins(response.data);
-          console.log(response.data)
-        })
-        .catch((error) => {
-           if(axios.isCancel(error)) {
-            console.log("Fetching aborted")
-           } else {
-            console.log(error.message);
-           }
-        });
-      setLoading(true);
-      console.log(loading)
-    };
     
   fetchData();
 
-  }, []);
+  }, [fetchData]);
    
     return (
         <div className="mt-4 shadow-[0_4px_12px_rgba(0,0,0,0.1)] w-[95% max-w-[1200px] mx-auto rounded-md p-6">

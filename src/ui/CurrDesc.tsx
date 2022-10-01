@@ -1,13 +1,18 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import parse from "html-react-parser";
-import Tags from "./Tags"
-import CoinLinks from "./CoinsLinks";
+import {Tags} from "./Tags"
+import {CoinLinks} from "./CoinLinks";
 
 
 export interface coinDeatiled {
     image: string;
     name: string;
+    sourceCode: string;
+    chat: string;
+    twitter: string;
+    announcement: string;
+    site: string;
     rank: string;
     desc: string;
 }
@@ -38,7 +43,7 @@ export const CurrDesc: React.FC<Props> = ({loadedStatus, coinDeatiledData}) => {
                     <Tags className="text-white bg-blue-grey-500 font-medium">
                         Rank #{coinDeatiledData.rank}
                     </Tags>
-                    <Tags>Coins</Tags>
+                    <Tags className="text-white bg-blue-grey-500 font-medium">Coins</Tags>
                 </div>
             )}
             {!loadedStatus && <Skeleton className="h-8 mt-2"/>}

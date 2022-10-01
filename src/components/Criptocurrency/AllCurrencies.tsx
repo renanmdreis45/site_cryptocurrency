@@ -63,7 +63,7 @@ const AllCurrencies: React.FC<Props> = ({theme, allCoins, onCloseModalHandler, e
         <div className="flex z-0 justify-center">
             <Pagination
               className="w-fit"
-              count={+(allCoins.length/ 20).toFixed()}
+              count={+(allCoins.length / 20).toFixed()}
               variant="outlined"
               color="primary"
               size="small"

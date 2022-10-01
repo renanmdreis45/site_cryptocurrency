@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-import { setDefaultResultOrder } from "dns";
 import React, {useCallback, useEffect, useState} from "react";
 import {SingleCoin} from "../components/api";
 import {CurrDesc} from "./CurrDesc";
@@ -81,9 +80,9 @@ export const CoinDescription: React.FC<Props> = ({coinName, theme}) => {
                 theme === true? "bg-white" : "bg-[#0a1929] text-white"
             }`}
         >
-        {!error && {
-            <CurrDesc coinDeatiledData={coinData} loadedStatus={loading} />
-        }}
+        {!error && (
+            <CurrDesc coinDeatiledData={coinData!} loadedStatus={loading} />
+        )}
         <div className="md:overflow-y-auto md:w-[65%] md:border-1 border-grey-600 p-4">
             
 

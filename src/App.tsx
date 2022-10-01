@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import {Trending} from "./components/Trending/trending"
 import CryptoCurrencies from './components/Criptocurrency/CryptoCurrencies';
+import {Modal} from "./ui/Modal";
 
 import Navbar from './components/Navbar/Navbar';
 
 function App() {
 
   const [modalStatus, setModalStatus] = useState(false);
-  const [coinId, setCurrenCoinid] = useState("");
+  const [coinId, setCurrentCoinid] = useState("");
   const [themeLight, setTheme] = useState(true);
 
   const onsetThemeHandler = () => {
@@ -17,9 +18,9 @@ function App() {
   const onCloseModalHandler = (id: string) => {
     setModalStatus((status) => !status);
     if (!id) {
-      setCurrenCoinid("");
+      setCurrentCoinid("");
     } else {
-      setCurrenCoinid(id);
+      setCurrentCoinid(id);
     }
   };
 
@@ -31,6 +32,13 @@ function App() {
         themeStatus={themeLight}
         onsetModal={onCloseModalHandler}
       />
+      {modalStatus && (
+        <Modal 
+          themeStatus={themeLight}
+          onCoinId={coinId}
+          onsetModal={onCloseModalHandler}
+        />
+      )}
     </div>
   );
 }

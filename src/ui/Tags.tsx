@@ -2,7 +2,7 @@ import React from "react";
 
 interface Props {
     className: string | undefined;
-    children: JSX.Element;
+    children: React.ReactNode;
 }
 
 export const Tags: React.FC<Props> = ({className, children}) => {

@@ -29,46 +29,44 @@ const CryptoCurrencies: React.FC<Props> = ({themeStatus, onsetModal}) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [search, setSearch] = useState<string>("");
-
-        const fetchingData = useCallback(async () => {
-            setLoading(false);
-            setError("");
-            let url = CoinList();
-            await axios.get(url)
-            .then((response: AxiosResponse) => {
-              setData(response.data);
-            })
-            .catch((error) => {
-               if(axios.isCancel(error)) {
-                console.log("Fetching aborted")
-               } else {
-                console.log(error.message);
-               }
-            });
-          setLoading(true);
-          console.log(data)
-        }, []);
-        
     
-      useEffect(() => {
-        fetchingData();
-      }, [fetchingData]);
+    async function fetchingData() {
+      setLoading(true);
+      setError("");
+      try {
+        let url = CoinList();
+        let response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Some thing Went Wrong");
+        }
+        let data = await response.json();
+        setCryptoCoin(data);
+        setData(data);
+      } catch (error: any) {
+        setError(error.message);
+      }
+      setLoading(false);
+    }
 
     useEffect(() => {
-        let id = setTimeout(() => {
-          setCryptoCoin(
-            data.filter((each) => {
-              return (
-                each.id.toLowerCase().includes(search) ||
-                each.id.toUpperCase().includes(search)
-              );
-            })
-          );
-        }, 600);
-        return () => {
-          clearTimeout(id);
-        };
-      }, [search, data]);
+      fetchingData();
+    }, []);
+    
+    useEffect(() => {
+      let id = setTimeout(() => {
+        setCryptoCoin(
+          data.filter((each) => {
+            return (
+              each.id.toLowerCase().includes(search) ||
+              each.id.toUpperCase().includes(search)
+            );
+          })
+        );
+      }, 600);
+      return () => {
+        clearTimeout(id);
+      };
+    }, [search, data]);
     
     const onSearchHandler = (e: { target: { value: React.SetStateAction<string>; }; }) => {
         setSearch(e.target.value);
